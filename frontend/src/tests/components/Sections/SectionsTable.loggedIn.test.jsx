@@ -3,7 +3,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import SectionsTable from "main/components/Sections/SectionsTable";
+import SectionsTable, {
+  onError,
+  onSuccess,
+} from "main/components/Sections/SectionsTable";
+import { objectToAxiosParams } from "main/components/Sections/SectionsTable";
+
 import primaryFixtures from "fixtures/primaryFixtures";
 
 import axios from "axios";
@@ -13,6 +18,7 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { personalScheduleFixtures } from "fixtures/personalScheduleFixtures";
 
 import { useBackendMutation } from "main/utils/useBackend";
+import { toast } from "react-toastify";
 
 // mock the error console to avoid cluttering the test output
 import mockConsole from "tests/testutils/mockConsole";
@@ -47,6 +53,109 @@ vi.mock("main/utils/currentUser", async () => ({
 }));
 
 describe("SectionsTable tests", () => {
+  describe("objectToAxiosParams", () => {
+    it("should return the correct axios parameters", () => {
+      const data = {
+        enrollCd: 12345,
+        psId: 15,
+      };
+
+      const result = objectToAxiosParams(data);
+
+      expect(result).toEqual({
+        url: "/api/courses/post",
+        method: "POST",
+        params: {
+          enrollCd: "12345",
+          psId: "15",
+        },
+      });
+    });
+  });
+
+  describe("onSuccess", () => {
+    it("should display a success message for new course creation", () => {
+      const response = [{ id: 1, enrollCd: "12345" }];
+      onSuccess(response);
+      expect(toast).toHaveBeenCalledWith(
+        "New course Created - id: 1 enrollCd: 12345",
+      );
+    });
+
+    it("should display a success message for course replacement", () => {
+      const response = [
+        { enrollCd: "12345" },
+        { enrollCd: "67890" },
+        { enrollCd: "54321" },
+      ];
+      onSuccess(response);
+      expect(toast).toHaveBeenCalledWith(
+        "Course 12345 replaced old section 54321 with new section 67890",
+      );
+    });
+  });
+
+  describe("onError", () => {
+    beforeEach(() => {
+      restoreConsole = mockConsole();
+      useBackendMutation.mockClear();
+    });
+
+    afterEach(() => {
+      restoreConsole();
+      vi.resetAllMocks();
+    });
+
+    it("should display an error message with the response data", () => {
+      // arrange
+
+      const queryClient = new QueryClient();
+      useBackendMutation.mockReturnValue({
+        mutate: vi.fn(),
+      });
+
+      // Render a component that will call useBackendMutation
+      render(
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <SectionsTable sections={primaryFixtures.f24_math_lowerDiv} />
+          </MemoryRouter>
+        </QueryClientProvider>,
+      );
+
+      const error = {
+        response: {
+          data: { message: "An error occurred" },
+        },
+      };
+
+      // act
+      onError(error);
+
+      // assert
+      expect(useBackendMutation).toHaveBeenCalledTimes(1);
+      expect(useBackendMutation).toHaveBeenCalledWith(
+        objectToAxiosParams,
+        { onSuccess, onError },
+        [],
+      );
+
+      expect(toast.error).toHaveBeenCalledWith("An error occurred");
+      expect(console.error).toHaveBeenCalledWith("onError: error=", error);
+    });
+
+    it("should display a generic error message when no response data is available", () => {
+      const error = {
+        response: {},
+      };
+      onError(error);
+      expect(toast.error).toHaveBeenCalledWith(
+        "An unexpected error occurred adding the schedule: " +
+          JSON.stringify(error),
+      );
+    });
+  });
+
   describe("Section Table tests", () => {
     let axiosMock;
     const queryClient = new QueryClient();
