@@ -4,12 +4,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import SectionsTable from "main/components/Sections/SectionsTable";
-import {
-  onError,
-  onSuccess,
-  objectToAxiosParams,
-} from "main/utils/SectionsTableUtils";
-
 import primaryFixtures from "fixtures/primaryFixtures";
 
 import axios from "axios";
@@ -19,7 +13,6 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { personalScheduleFixtures } from "fixtures/personalScheduleFixtures";
 
 import { useBackendMutation } from "main/utils/useBackend";
-import { toast } from "react-toastify";
 
 // mock the error console to avoid cluttering the test output
 import mockConsole from "tests/testutils/mockConsole";
