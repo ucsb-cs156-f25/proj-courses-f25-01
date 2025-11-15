@@ -1,9 +1,13 @@
 import SectionsTableBase from "main/components/SectionsTableBase";
 
 import { useBackendMutation } from "main/utils/useBackend";
-import { toast } from "react-toastify";
 import { useCurrentUser } from "main/utils/currentUser.jsx";
 
+import {
+  objectToAxiosParams,
+  onSuccess,
+  onError,
+} from "main/utils/SectionsTableUtils";
 import {
   formatDays,
   formatInstructors,
@@ -20,40 +24,6 @@ import {
 import { yyyyqToQyy } from "main/utils/quarterUtilities";
 import AddToScheduleModal from "main/components/PersonalSchedules/AddToScheduleModal";
 
-/* eslint-disable react-refresh/only-export-components*/
-
-export const objectToAxiosParams = (data) => {
-  return {
-    url: "/api/courses/post",
-    method: "POST",
-    params: {
-      enrollCd: data.enrollCd.toString(),
-      psId: data.psId.toString(),
-    },
-  };
-};
-
-export const onSuccess = (response) => {
-  if (response.length < 3) {
-    toast(
-      `New course Created - id: ${response[0].id} enrollCd: ${response[0].enrollCd}`,
-    );
-  } else {
-    toast(
-      `Course ${response[0].enrollCd} replaced old section ${response[2].enrollCd} with new section ${response[1].enrollCd}`,
-    );
-  }
-};
-
-export const onError = (error) => {
-  console.error("onError: error=", error);
-  const message =
-    error.response.data?.message ||
-    `An unexpected error occurred adding the schedule: ${JSON.stringify(error)}`;
-  toast.error(message);
-};
-
-/* eslint-enable react-refresh/only-export-components*/
 export default function SectionsTable({ sections, schedules = [] }) {
   if (!(schedules instanceof Array)) {
     throw new Error("schedules prop must be an array");
