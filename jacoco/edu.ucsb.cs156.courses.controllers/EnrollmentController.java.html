@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnrollmentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">courses</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.courses.controllers</a> &gt; <span class="el_source">EnrollmentController.java</span></div><h1>EnrollmentController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.courses.controllers;
 
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import edu.ucsb.cs156.courses.entities.EnrollmentDataPoint;
 import edu.ucsb.cs156.courses.repositories.EnrollmentDataPointRepository;
+import edu.ucsb.cs156.courses.services.EnrollmentCSVService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 <span class="fc" id="L35">public class EnrollmentController extends ApiController {</span>
 
   @Autowired EnrollmentDataPointRepository enrollmentDataPointRepository;
+  @Autowired EnrollmentCSVService enrollmentCSVService;
 
   @Operation(
       summary = &quot;Download Enrollment Data as CSV File&quot;,
@@ -53,40 +54,31 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
   public ResponseEntity&lt;StreamingResponseBody&gt; csvForQuarter(
       @Parameter(name = &quot;yyyyq&quot;, description = &quot;quarter in yyyyq format&quot;, example = &quot;20252&quot;)
           @RequestParam
-          String yyyyq,
-      @Parameter(
-              name = &quot;testException&quot;,
-              description = &quot;test exception (e.g. CsvDataTypeMismatchException)&quot;,
-              example = &quot;&quot;)
-          @RequestParam(required = false, defaultValue = &quot;&quot;)
-          String testException)
+          String yyyyq)
       throws Exception, IOException {
-<span class="fc" id="L64">    StreamingResponseBody stream =</span>
+<span class="fc" id="L59">    StreamingResponseBody stream =</span>
         (outputStream) -&gt; {
-<span class="fc" id="L66">          Iterable&lt;EnrollmentDataPoint&gt; iterable = enrollmentDataPointRepository.findByYyyyq(yyyyq);</span>
-<span class="fc" id="L67">          List&lt;EnrollmentDataPoint&gt; list = Streamable.of(iterable).toList();</span>
+<span class="fc" id="L61">          Iterable&lt;EnrollmentDataPoint&gt; iterable = enrollmentDataPointRepository.findByYyyyq(yyyyq);</span>
+<span class="fc" id="L62">          List&lt;EnrollmentDataPoint&gt; list = Streamable.of(iterable).toList();</span>
 
-<span class="fc" id="L69">          try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</span>
+<span class="fc" id="L64">          try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</span>
             try {
-<span class="fc bfc" id="L71" title="All 2 branches covered.">              if (testException.equals(&quot;CsvDataTypeMismatchException&quot;)) {</span>
-<span class="fc" id="L72">                throw new CsvDataTypeMismatchException(&quot;test exception&quot;);</span>
-              }
-<span class="fc" id="L74">              new StatefulBeanToCsvBuilder&lt;EnrollmentDataPoint&gt;(writer).build().write(list);</span>
-<span class="fc" id="L75">            } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {</span>
-<span class="fc" id="L76">              log.error(&quot;Error writing CSV file&quot;, e);</span>
-<span class="fc" id="L77">              throw new IOException(&quot;Error writing CSV file: &quot; + e.getMessage());</span>
-<span class="fc" id="L78">            }</span>
+<span class="fc" id="L66">                enrollmentCSVService.writeEnrollmentCSV(writer, list);</span>
+<span class="fc" id="L67">            } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {</span>
+<span class="fc" id="L68">              log.error(&quot;Error writing CSV file&quot;, e);</span>
+<span class="fc" id="L69">              throw new IOException(&quot;Error writing CSV file: &quot; + e.getMessage());</span>
+<span class="fc" id="L70">            }</span>
           }
-<span class="fc" id="L80">        };</span>
+<span class="fc" id="L72">        };</span>
 
-<span class="fc" id="L82">    return ResponseEntity.ok()</span>
-<span class="fc" id="L83">        .contentType(MediaType.parseMediaType(&quot;text/csv; charset=UTF-8&quot;))</span>
-<span class="fc" id="L84">        .header(</span>
+<span class="fc" id="L74">    return ResponseEntity.ok()</span>
+<span class="fc" id="L75">        .contentType(MediaType.parseMediaType(&quot;text/csv; charset=UTF-8&quot;))</span>
+<span class="fc" id="L76">        .header(</span>
             HttpHeaders.CONTENT_DISPOSITION,
-<span class="fc" id="L86">            String.format(&quot;attachment;filename=enrollment_%s.csv&quot;, yyyyq))</span>
-<span class="fc" id="L87">        .header(HttpHeaders.CONTENT_TYPE, &quot;text/csv; charset=UTF-8&quot;)</span>
-<span class="fc" id="L88">        .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)</span>
-<span class="fc" id="L89">        .body(stream);</span>
+<span class="fc" id="L78">            String.format(&quot;attachment;filename=enrollment_%s.csv&quot;, yyyyq))</span>
+<span class="fc" id="L79">        .header(HttpHeaders.CONTENT_TYPE, &quot;text/csv; charset=UTF-8&quot;)</span>
+<span class="fc" id="L80">        .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)</span>
+<span class="fc" id="L81">        .body(stream);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
