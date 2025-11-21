@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 <span class="fc" id="L13">public class EnrollmentCSVService {</span>
 
-    public StatefulBeanToCsv&lt;EnrollmentDataPoint&gt; getStatefulBeanToCSV(Writer writer) {
-<span class="fc" id="L16">        return new StatefulBeanToCsvBuilder&lt;EnrollmentDataPoint&gt;(writer).build();</span>
-    }
+  public StatefulBeanToCsv&lt;EnrollmentDataPoint&gt; getStatefulBeanToCSV(Writer writer) {
+<span class="fc" id="L16">    return new StatefulBeanToCsvBuilder&lt;EnrollmentDataPoint&gt;(writer).build();</span>
+  }
 
-    public void writeEnrollmentCSV(Writer writer, List&lt;EnrollmentDataPoint&gt; list)
-            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+  public void writeEnrollmentCSV(Writer writer, List&lt;EnrollmentDataPoint&gt; list)
+      throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
 
-<span class="fc" id="L22">        StatefulBeanToCsv&lt;EnrollmentDataPoint&gt; beanToCsvWriter = getStatefulBeanToCSV(writer);</span>
-<span class="fc" id="L23">        beanToCsvWriter.write(list);</span>
-<span class="fc" id="L24">    }</span>
+<span class="fc" id="L22">    StatefulBeanToCsv&lt;EnrollmentDataPoint&gt; beanToCsvWriter = getStatefulBeanToCSV(writer);</span>
+<span class="fc" id="L23">    beanToCsvWriter.write(list);</span>
+<span class="fc" id="L24">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

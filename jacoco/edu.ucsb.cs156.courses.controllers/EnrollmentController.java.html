@@ -63,7 +63,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
 <span class="fc" id="L64">          try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {</span>
             try {
-<span class="fc" id="L66">                enrollmentCSVService.writeEnrollmentCSV(writer, list);</span>
+<span class="fc" id="L66">              enrollmentCSVService.writeEnrollmentCSV(writer, list);</span>
 <span class="fc" id="L67">            } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {</span>
 <span class="fc" id="L68">              log.error(&quot;Error writing CSV file&quot;, e);</span>
 <span class="fc" id="L69">              throw new IOException(&quot;Error writing CSV file: &quot; + e.getMessage());</span>
