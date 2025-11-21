@@ -240,7 +240,7 @@ public class JobsController extends ApiController {
           String sortDirection) {
 
     List<String> allowedSortFields =
-        Arrays.asList("id", "status", "createdAt", "updatedAt");
+        Arrays.asList("id", "createdBy", "status", "createdAt", "updatedAt");
 
     if (!allowedSortFields.contains(sortField)) {
       throw new IllegalArgumentException(
