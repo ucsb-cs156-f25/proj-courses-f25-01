@@ -8,6 +8,7 @@ import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import { toast } from "react-toastify";
 import * as useBackend from "main/utils/useBackend.jsx";
+import * as systemInfoModule from "main/utils/systemInfo";
 
 import GEAreaSearchForm from "main/components/GEAreas/GEAreaSearchForm";
 
@@ -116,7 +117,9 @@ describe("GEAreaSearchForm tests", () => {
       ).toBeInTheDocument();
       expect(getItemSpy).toHaveBeenCalledWith("GEAreaSearch.Quarter");
       expect(getItemSpy).toHaveBeenCalledWith("GEAreaSearch.Area");
-      expect(screen.getByText("Searching for B in M21")).toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.getByText("Searching for B in M21")).toBeInTheDocument(),
+      );
     });
 
     test("selecting quarter updates state", () => {
@@ -181,6 +184,67 @@ describe("GEAreaSearchForm tests", () => {
       const areaSelect = screen.getByLabelText("General Education Area");
       userEvent.selectOptions(areaSelect, "B");
       expect(areaSelect.value).toBe("B");
+    });
+
+    test("area dropdown initially shows only ALL before backend loads", () => {
+      axiosMock
+        .onGet("/api/public/generalEducationInfo")
+        .reply(() => new Promise(() => {})); // never resolves
+
+      getItemSpy.mockImplementation((key) => null);
+      useBackendSpy.mockReturnValue({ data: [], _status: "loading", _error: null });
+
+      render(<WrappedForm />);
+
+      const areaSelect = screen.getByLabelText("General Education Area");
+      expect(areaSelect.children.length).toBe(1);
+    });
+
+    test("works when /api/systemInfo returns 500 (systemInfo undefined fallback)", async () => {
+      axiosMock.onGet("/api/systemInfo").reply(500);
+
+      render(<WrappedForm />);
+
+      const quarterSelect = await screen.findByLabelText("Quarter");
+      expect(quarterSelect.value).toBe("20221");
+    });
+
+    test("uses fallback quarter and area when systemInfo or localStorage are not ready", () => {
+      const defaultQuarter = "20221";
+
+      const systemInfoMock = { data: "", isLoading: true, isError: false };
+      const useSystemInfoSpy = vi
+        .spyOn(systemInfoModule, "useSystemInfo")
+        .mockReturnValue(systemInfoMock);
+
+      getItemSpy.mockImplementation(() => null);
+
+      render(<WrappedForm />);
+
+      const quarterDropdown = screen.getByLabelText("Quarter");
+      expect(quarterDropdown).toBeInTheDocument();
+      expect(quarterDropdown.value).toBe(defaultQuarter);
+
+      const areaDropdown = screen.getByLabelText("General Education Area");
+      expect(areaDropdown.value).toBe("ALL");
+
+      useSystemInfoSpy.mockRestore();
+    });
+
+    test("falls back to default quarter range when systemInfo missing quarter fields", async () => {
+      axiosMock.onGet("/api/systemInfo").reply(200, {
+        springH2ConsoleEnabled: false,
+        showSwaggerUILink: false,
+        startQtrYYYYQ: null,
+        endQtrYYYYQ: null,
+      });
+
+      render(<WrappedForm />);
+
+      await waitFor(() => {
+        // default values are used
+        expect(screen.getByLabelText("Quarter").value).toBe("20221");
+      });
     });
 
     test("submit button calls fetchJSON with correct args and sets local storage", async () => {
