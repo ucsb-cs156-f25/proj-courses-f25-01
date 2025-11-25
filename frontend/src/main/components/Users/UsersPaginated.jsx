@@ -4,22 +4,10 @@ import OurPagination from "main/components/Utils/OurPagination";
 import { Container } from "react-bootstrap";
 
 const columns = [
-  {
-    header: "ID",
-    accessorKey: "id",
-  },
-  {
-    header: "First Name",
-    accessorKey: "givenName",
-  },
-  {
-    header: "Last Name",
-    accessorKey: "familyName",
-  },
-  {
-    header: "Email",
-    accessorKey: "email",
-  },
+  { header: "ID", accessorKey: "id" },
+  { header: "First Name", accessorKey: "givenName" },
+  { header: "Last Name", accessorKey: "familyName" },
+  { header: "Email", accessorKey: "email" },
   {
     header: "Admin",
     id: "admin",
@@ -30,15 +18,22 @@ const columns = [
 export default function UsersPaginated({
   users,
   totalPages,
-  onPageChange,
   currentPage,
+  onPageChange,
 }) {
   return (
     <Container className="d-flex justify-content-center mt-4">
       <div style={{ width: "100%" }}>
+        {/* Pagination at the top */}
+        <OurPagination
+          currentActivePage={currentPage}
+          updateActivePage={onPageChange}
+          totalPages={totalPages}
+        />
+
         {/* User table */}
         <OurTable
-          data={users}
+          data={users || []}
           columns={columns}
           testid={"UsersPaginatedTable"}
         />
