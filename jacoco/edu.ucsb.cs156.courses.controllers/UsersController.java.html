@@ -7,6 +7,9 @@ import edu.ucsb.cs156.courses.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = &quot;User information (admin only)&quot;)
 @RequestMapping(&quot;/api/admin/users&quot;)
 @RestController
-<span class="fc" id="L19">public class UsersController extends ApiController {</span>
+<span class="fc" id="L22">public class UsersController extends ApiController {</span>
   @Autowired UserRepository userRepository;
 
   @Autowired ObjectMapper mapper;
@@ -25,9 +28,20 @@ import org.springframework.web.bind.annotation.RestController;
   @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
   @GetMapping(&quot;&quot;)
   public ResponseEntity&lt;String&gt; users() throws JsonProcessingException {
-<span class="fc" id="L28">    Iterable&lt;User&gt; users = userRepository.findAll();</span>
-<span class="fc" id="L29">    String body = mapper.writeValueAsString(users);</span>
-<span class="fc" id="L30">    return ResponseEntity.ok().body(body);</span>
+<span class="fc" id="L31">    Iterable&lt;User&gt; users = userRepository.findAll();</span>
+<span class="fc" id="L32">    String body = mapper.writeValueAsString(users);</span>
+<span class="fc" id="L33">    return ResponseEntity.ok().body(body);</span>
   }
+
+  @Operation(summary = &quot;Get a paginated list of users&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @GetMapping(&quot;/paged&quot;)
+    public Page&lt;User&gt; getUsersPaginated(
+            @RequestParam(defaultValue = &quot;0&quot;) int page,
+            @RequestParam(defaultValue = &quot;10&quot;) int size
+    ) {
+<span class="fc" id="L43">        PageRequest pageRequest = PageRequest.of(page, size);</span>
+<span class="fc" id="L44">        return userRepository.findAll(pageRequest);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
