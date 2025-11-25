@@ -1,28 +1,30 @@
 import React from "react";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import UsersTable from "main/components/Users/UsersTable";
+import OurPagination from "main/components/Users/OurPagination";
 
 import { useBackend } from "main/utils/useBackend";
 const AdminUsersPage = () => {
-  const {
-    data: users,
-    error: _error,
-    status: _status,
-  } = useBackend(
-    // Stryker disable next-line all : don't test internal caching of React Query
-    ["/api/admin/users"],
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data: usersPage, error: _error, status: _status } = useBackend(
+    [`/api/admin/users/paginated?page=${currentPage - 1}`],
     {
-      // Stryker disable next-line StringLiteral : GET is default, so replacing with "" is an equivalent mutation
       method: "GET",
-      url: "/api/admin/users",
+      url: "/api/admin/users/paginated",
+      params: { page: currentPage - 1, pageSize: 50 },
     },
-    [],
+    { content: [], page: { totalPages: 1 } }
   );
 
   return (
     <BasicLayout>
       <h2>Users</h2>
-      <UsersTable users={users} />
+      <UsersPaginated
+        users={usersPage.content}
+        totalPages={usersPage.page.totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </BasicLayout>
   );
 };
