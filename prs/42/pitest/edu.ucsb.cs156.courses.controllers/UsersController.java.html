@@ -178,7 +178,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RequestParam;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import org.springframework.http.ResponseEntity;</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -192,7 +192,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.springframework.http.ResponseEntity;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import org.springframework.security.access.prepost.PreAuthorize;</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -206,7 +206,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.springframework.security.access.prepost.PreAuthorize;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.GetMapping;</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -220,7 +220,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.GetMapping;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RequestMapping;</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -234,7 +234,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RequestMapping;</span></pre></td></tr>
+<td class=''><pre><span  class=''>import org.springframework.web.bind.annotation.RequestParam;</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -530,7 +530,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>    @PreAuthorize(&#34;hasRole(&#39;ROLE_ADMIN&#39;)&#34;)</span></pre></td></tr>
+<td class=''><pre><span  class=''>  @PreAuthorize(&#34;hasRole(&#39;ROLE_ADMIN&#39;)&#34;)</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -544,7 +544,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>    @GetMapping(&#34;/paged&#34;)</span></pre></td></tr>
+<td class=''><pre><span  class=''>  @GetMapping(&#34;/paged&#34;)</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -558,7 +558,7 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>    public Page&#60;User&#62; getUsersPaginated(</span></pre></td></tr>
+<td class=''><pre><span  class=''>  public Page&#60;User&#62; getUsersPaginated(</span></pre></td></tr>
 
 <tr>
 <td class='na'>
@@ -572,10 +572,10 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>            @RequestParam(defaultValue = &#34;0&#34;) int page,</span></pre></td></tr>
+<td class=''><pre><span  class=''>      @RequestParam(defaultValue = &#34;0&#34;) int page, @RequestParam(defaultValue = &#34;10&#34;) int size) {</span></pre></td></tr>
 
 <tr>
-<td class='na'>
+<td class='covered'>
 <a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_41'/>
 41
 </td>
@@ -586,24 +586,26 @@
 </span>
 </span>
 </td>
-<td class=''><pre><span  class=''>            @RequestParam(defaultValue = &#34;10&#34;) int size</span></pre></td></tr>
-
-<tr>
-<td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_42'/>
-42
-</td>
-<td class=''>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_42'></a>
-<span>
-</span>
-</span>
-</td>
-<td class=''><pre><span  class=''>    ) {</span></pre></td></tr>
+<td class='covered'><pre><span  class=''>    PageRequest pageRequest = PageRequest.of(page, size);</span></pre></td></tr>
 
 <tr>
 <td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_42'/>
+42
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_42'>1</a>
+<span>
+1. getUsersPaginated : replaced return value with null for edu/ucsb/cs156/courses/controllers/UsersController::getUsersPaginated &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return userRepository.findAll(pageRequest);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
 <a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_43'/>
 43
 </td>
@@ -614,46 +616,16 @@
 </span>
 </span>
 </td>
-<td class='covered'><pre><span  class=''>        PageRequest pageRequest = PageRequest.of(page, size);</span></pre></td></tr>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
 
 <tr>
-<td class='covered'>
+<td class='na'>
 <a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_44'/>
 44
 </td>
-<td class='killed'>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_44'>1</a>
-<span>
-1. getUsersPaginated : replaced return value with null for edu/ucsb/cs156/courses/controllers/UsersController::getUsersPaginated &rarr; KILLED<br/>
-
-</span>
-</span>
-</td>
-<td class='covered'><pre><span  class='killed'>        return userRepository.findAll(pageRequest);</span></pre></td></tr>
-
-<tr>
-<td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_45'/>
-45
-</td>
 <td class=''>
 <span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_45'></a>
-<span>
-</span>
-</span>
-</td>
-<td class=''><pre><span  class=''>    }</span></pre></td></tr>
-
-<tr>
-<td class='na'>
-<a name='org.pitest.mutationtest.report.html.SourceFile@2b067248_46'/>
-46
-</td>
-<td class=''>
-<span class='pop'>
-<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_46'></a>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_44'></a>
 <span>
 </span>
 </span>
@@ -676,11 +648,11 @@
 </td>
 </tr>
 <tr>
-<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2b067248_44'>44</a></td> 
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2b067248_42'>42</a></td> 
 <td></td>
 <td>
 
-<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_44'/> 
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2b067248_42'/> 
 
 <p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getUsersPaginated<br/><b>Killed by : </b>edu.ucsb.cs156.courses.controllers.UsersControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.UsersControllerTests]/[method:users_paged__admin_logged_in()]</span></span> replaced return value with null for edu/ucsb/cs156/courses/controllers/UsersController::getUsersPaginated &rarr; KILLED</span>
 </div> 
@@ -708,7 +680,7 @@
 
 <h2>Tests examined</h2>
 <ul>
-<li>edu.ucsb.cs156.courses.controllers.UsersControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.UsersControllerTests]/[method:users_paged__admin_logged_in()] (10 ms)</li><li>edu.ucsb.cs156.courses.controllers.UsersControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.UsersControllerTests]/[method:users__admin_logged_in()] (4 ms)</li><li>edu.ucsb.cs156.courses.controllers.ApiControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.ApiControllerTests]/[method:users__admin_logged_in()] (79 ms)</li>
+<li>edu.ucsb.cs156.courses.controllers.UsersControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.UsersControllerTests]/[method:users_paged__admin_logged_in()] (10 ms)</li><li>edu.ucsb.cs156.courses.controllers.UsersControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.UsersControllerTests]/[method:users__admin_logged_in()] (4 ms)</li><li>edu.ucsb.cs156.courses.controllers.ApiControllerTests.[engine:junit-jupiter]/[class:edu.ucsb.cs156.courses.controllers.ApiControllerTests]/[method:users__admin_logged_in()] (81 ms)</li>
 </ul>
 
 <br/>
