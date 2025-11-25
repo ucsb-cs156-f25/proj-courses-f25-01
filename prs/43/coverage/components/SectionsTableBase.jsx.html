@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -152,7 +152,25 @@
 <a name='L87'></a><a href='#L87'>87</a>
 <a name='L88'></a><a href='#L88'>88</a>
 <a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,12 +180,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">48x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">48x</span>
-<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">48x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -180,6 +201,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -198,10 +222,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2804x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2804x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">342x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">342x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -249,9 +285,12 @@ import {
   getExpandedRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import OurPagination from "main/components/Utils/OurPagination";
 &nbsp;
 function SectionsTableBase({ data, columns, testid = "testid" }) {
   const [expanded, setExpanded] = useState({});
+  const [page, setPage] = useState(1); // State for current page
+  const pageSize = 10;                 // Limit to 10 items
 &nbsp;
   const altColor = "#e3ebfc";
   const whiteColor = "#ffffff";
@@ -267,77 +306,92 @@ function SectionsTableBase({ data, columns, testid = "testid" }) {
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(), // Required for expansion
   });
+&nbsp;
+  // Pagination Logic: Slice the rows based on the current page
+  const rows = table.getRowModel().rows;
+  const totalPages = Math.ceil(rows.length / pageSize);
+  const rowsToDisplay = rows.slice((page - 1) * pageSize, page * pageSize);
+&nbsp;
   return (
-    &lt;Table data-testid={testid} bordered hover className="table-hover"&gt;
-      &lt;thead&gt;
-        {table.getHeaderGroups().map((headerGroup) =&gt; (
-          &lt;tr key={headerGroup.id}&gt;
-            {headerGroup.headers.map((header) =&gt; (
-              &lt;th key={header.id} colSpan={header.colSpan}&gt;
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-              &lt;/th&gt;
-            ))}
-          &lt;/tr&gt;
-        ))}
-      &lt;/thead&gt;
-      &lt;tbody&gt;
-        {table.getRowModel().rows.map((row) =&gt; {
-          const rowStyle = {
-            backgroundColor: row.index % 2 === 0 ? altColor : whiteColor,
-          };
-          const rowId = `row-${row.id}`;
-          return (
-            &lt;tr key={rowId} style={rowStyle} data-testid={`${testid}-${rowId}`}&gt;
-              {row.getVisibleCells().map((cell) =&gt; (
-                &lt;td
-                  key={cell.id}
-                  data-testid={`${testid}-cell-row-${cell.row.id}-col-${cell.column.id}`}
-                  style={{
-                    backgroundColor: "inherit",
-                    fontWeight: row.depth === 0 ? "bold" : "normal",
-                  }}
-                &gt;
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                &lt;/td&gt;
+    &lt;&gt;
+      &lt;Table data-testid={testid} bordered hover className="table-hover"&gt;
+        &lt;thead&gt;
+          {table.getHeaderGroups().map((headerGroup) =&gt; (
+            &lt;tr key={headerGroup.id}&gt;
+              {headerGroup.headers.map((header) =&gt; (
+                &lt;th key={header.id} colSpan={header.colSpan}&gt;
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                &lt;/th&gt;
               ))}
             &lt;/tr&gt;
-          );
-        })}
-      &lt;/tbody&gt;
-      &lt;tfoot&gt;
-        {table.getFooterGroups().map((footerGroup) =&gt; (
-          &lt;tr key={footerGroup.id}&gt;
-            {footerGroup.headers.map((header) =&gt; (
-              &lt;th key={header.id} colSpan={header.colSpan}&gt;
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.footer,
-                      header.getContext(),
-                    )}
-              &lt;/th&gt;
-            ))}
-          &lt;/tr&gt;
-        ))}
-      &lt;/tfoot&gt;
-    &lt;/Table&gt;
+          ))}
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          {rowsToDisplay.map((row) =&gt; {
+            const rowStyle = {
+              backgroundColor: row.index % 2 === 0 ? altColor : whiteColor,
+            };
+            const rowId = `row-${row.id}`;
+            return (
+              &lt;tr key={rowId} style={rowStyle} data-testid={`${testid}-${rowId}`}&gt;
+                {row.getVisibleCells().map((cell) =&gt; (
+                  &lt;td
+                    key={cell.id}
+                    data-testid={`${testid}-cell-row-${cell.row.id}-col-${cell.column.id}`}
+                    style={{
+                      backgroundColor: "inherit",
+                      fontWeight: row.depth === 0 ? "bold" : "normal",
+                    }}
+                  &gt;
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  &lt;/td&gt;
+                ))}
+              &lt;/tr&gt;
+            );
+          })}
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+          {table.getFooterGroups().map((footerGroup) =&gt; (
+            &lt;tr key={footerGroup.id}&gt;
+              {footerGroup.headers.map((header) =&gt; (
+                &lt;th key={header.id} colSpan={header.colSpan}&gt;
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext(),
+                      )}
+                &lt;/th&gt;
+              ))}
+            &lt;/tr&gt;
+          ))}
+        &lt;/tfoot&gt;
+      &lt;/Table&gt;
+&nbsp;
+      {totalPages &gt; 0 &amp;&amp; (
+        &lt;OurPagination
+          activePage={page}
+          changePage={setPage}
+          totalPages={totalPages}
+        /&gt;
+      )}
+    &lt;/&gt;
   );
 }
 &nbsp;
-export default SectionsTableBase;
-&nbsp;</pre></td></tr></table></pre>
+export default SectionsTableBase;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-25T22:30:53.380Z
+                at 2025-11-25T23:26:32.988Z
             </div>
         <script src="../prettify.js"></script>
         <script>
