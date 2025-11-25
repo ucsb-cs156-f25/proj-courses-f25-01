@@ -4,8 +4,8 @@ import UsersPaginated from "main/components/Users/UsersPaginated";
 import { useBackend } from "main/utils/useBackend";
 
 const AdminUsersPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);   // visible page (1-indexed)
-  const pageSize = 50;                                 // backend uses "size"
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 20;                                 
 
   const {
     data: page,
@@ -21,7 +21,7 @@ const AdminUsersPage = () => {
       method: "GET",
       url: "/api/admin/users/paged",
       params: {
-        page: currentPage - 1,  // convert to 0-index
+        page: currentPage - 1,
         size: pageSize,
         sort: "id"
       }

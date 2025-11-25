@@ -19,18 +19,19 @@ export default function UsersPaginated({ users, totalPages, onPageChange }) {
   return (
     <Container className="d-flex justify-content-center mt-4">
       <div style={{ width: "100%" }}>
-        {/* Pagination */}
-        <OurPagination
-          updateActivePage={onPageChange}
-          totalPages={totalPages}
-        />
-
         {/* Table */}
         <OurTable
           data={users || []}
           columns={columns}
           testid={"UsersPaginated"}
         />
+
+        {/* BOTTOM Pagination */}
+        <OurPagination
+          updateActivePage={onPageChange}
+          totalPages={totalPages}
+        />
+
       </div>
     </Container>
   );
