@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f25/proj-courses-f25-01
 owner: ucsb-cs156-f25
 repo_name: proj-courses-f25-01
-pull_requests: [{"author":{"id":"U_kgDOCO5ODw","is_bot":false,"login":"noahzlouie","name":"Noah Louie"},"headRefName":"nl-usertable-pg-frontend","number":44,"title":"nl - added frontend to user table pagination","url":"https://github.com/ucsb-cs156-f25/proj-courses-f25-01/pull/44"},{"author":{"id":"U_kgDOCO5ODw","is_bot":false,"login":"noahzlouie","name":"Noah Louie"},"headRefName":"nl-userstable-pg-backend","number":42,"title":"nl - added backendpoint for usertable pagination","url":"https://github.com/ucsb-cs156-f25/proj-courses-f25-01/pull/42"}]
+pull_requests: [{"author":{"id":"U_kgDOCO5ODw","is_bot":false,"login":"noahzlouie","name":"Noah Louie"},"headRefName":"nl-usertable-pg-frontend","number":44,"title":"nl - added frontend to user table pagination","url":"https://github.com/ucsb-cs156-f25/proj-courses-f25-01/pull/44"}]
