@@ -43,6 +43,15 @@ const usersFixtures = {
       admin: false,
     },
   ],
+
+  threeUsersPg: {
+    content: [],
+    totalPages: 1,
+    number: 0,
+    size: 10,
+  },
 };
+
+usersFixtures.threeUsersPg.content = usersFixtures.threeUsers;
 
 export default usersFixtures;
